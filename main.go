@@ -3,10 +3,14 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to my awesome site")
+	w.Header().Set("Content-Type", "text/html")
+	ip := r.RemoteAddr
+	dateTime := time.Now()
+	fmt.Fprintf(w, "<h1>Welcome to GoLang</h1>Your IP: %s<br>Date: %s", ip, dateTime.Format(time.ANSIC))
 }
 
 func main() {
