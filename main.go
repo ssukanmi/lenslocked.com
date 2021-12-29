@@ -14,6 +14,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "<h1>Welcome to Homepage</h1>Your IP: %s<br>Date: %s<br>", ip, dateTime.Format(time.ANSIC))
 	} else if r.URL.Path == "/contact" {
 		fmt.Fprint(w, "To get in touch, please send an email to <a href=\"mailto:support@lenslocked.com\">support@lenslocked.com</a>.")
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "<h1>We could not find the page you were looking for :(</h1>")
 	}
 }
 
