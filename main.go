@@ -22,6 +22,12 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	fmt.Println("Server started!!!")
-	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":3000", nil)
+	mux := &http.ServeMux{}
+	mux.HandleFunc("/", indexHandler)
+	http.ListenAndServe(":8080", mux)
+	// mux := http.NewServeMux()
+	// serveMux.HandleFunc("/", indexHandler)
+	// http.ListenAndServe(":8080", mux)
+	// http.HandleFunc("/", indexHandler)
+	// http.ListenAndServe(":3000", nil)
 }
