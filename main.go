@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,14 +23,20 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Fprint(w, "Welcome!\n")
+}
+
+func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
+}
+
 func main() {
 	fmt.Println("Server started!!!")
-	mux := &http.ServeMux{}
-	mux.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", mux)
-	// mux := http.NewServeMux()
-	// serveMux.HandleFunc("/", indexHandler)
-	// http.ListenAndServe(":8080", mux)
-	// http.HandleFunc("/", indexHandler)
-	// http.ListenAndServe(":3000", nil)
+	router := httprouter.New()
+	router.GET("/", Index)
+	router.GET("/hello/:name", Hello)
+
+	http.HandleFunc("/", indexHandler)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
