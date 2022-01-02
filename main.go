@@ -13,12 +13,31 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	ip := r.RemoteAddr
 	dateTime := time.Now()
-	fmt.Fprintf(w, "<h1>Welcome to Homepage</h1>Your IP: %s<br>Date: %s<br>", ip, dateTime.Format(time.ANSIC))
+	fmt.Fprint(w, "<h1>Welcome to Homepage</h1>")
+	fmt.Fprintf(w, "Your IP: %s<br/>", ip)
+	fmt.Fprintf(w, "Date: %s<br/>", dateTime.Format((time.ANSIC)))
+	fmt.Fprint(w, "<a href=\"/contact\">Contact page</a><br/>")
+	fmt.Fprint(w, "<a href=\"/faq\">FAQ page</a><br/>")
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, "To get in touch, please send an email to <a href=\"mailto:support@lenslocked.com\">support@lenslocked.com</a>.")
+	fmt.Fprint(w, "To get in touch, please send an email to <a href=\"mailto:support@lenslocked.com\">support@lenslocked.com</a>.<br/>")
+	fmt.Fprint(w, "<a href=\"/\">Go back home</a><br/>")
+	fmt.Fprint(w, "<a href=\"/faq\">FAQ page</a><br/>")
+}
+
+func faqHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, "<h1>This is the content of the FAQ page.</h1>")
+	fmt.Fprint(w, "<a href=\"/\">Go back home</a><br/>")
+	fmt.Fprint(w, "<a href=\"/contact\">Contact page</a><br/>")
+}
+
+func pnfHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, "<h1>Page not found</h1>")
+	fmt.Fprint(w, "<a href=\"/\">Go back home</a><br/>")
 }
 
 func main() {
@@ -27,5 +46,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
 	r.HandleFunc("/contact", contactHandler)
+	r.HandleFunc("/faq", faqHandler)
+	r.NotFoundHandler = http.HandlerFunc(pnfHandler)
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
