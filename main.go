@@ -34,8 +34,9 @@ func faqHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<a href=\"/contact\">Contact page</a><br/>")
 }
 
-func pnfHandler(w http.ResponseWriter, r *http.Request) {
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprint(w, "<h1>Page not found</h1>")
 	fmt.Fprint(w, "<a href=\"/\">Go back home</a><br/>")
 }
@@ -47,6 +48,6 @@ func main() {
 	r.HandleFunc("/", homeHandler)
 	r.HandleFunc("/contact", contactHandler)
 	r.HandleFunc("/faq", faqHandler)
-	r.NotFoundHandler = http.HandlerFunc(pnfHandler)
+	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
