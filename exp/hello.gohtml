@@ -1,0 +1,15 @@
+<h1>Hello, {{.Name}} your dog is {{.Dog}}, well {{.}}</h1>
+<div> 
+    <table>
+        <th>
+            <td>Age in numbers</td>
+            <td>Age in words</td>
+        </th>
+        {{range $k, $v := .Age}}
+        <tr>
+            <td>{{$k}}</td>
+            <td>{{$v}}</td>
+        </tr>
+        {{end}}
+    </table>
+</div>
