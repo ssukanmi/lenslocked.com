@@ -43,6 +43,7 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	fmt.Println("Server started!!!")
+	fmt.Println("Testing cli branching")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
