@@ -2,22 +2,22 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 )
 
+var (
+	homeTemplate *template.Template
+)
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	ip := r.RemoteAddr
-	dateTime := time.Now()
-	fmt.Fprint(w, "<h1>Welcome to Homepage</h1>")
-	fmt.Fprintf(w, "Your IP: %s<br/>", ip)
-	fmt.Fprintf(w, "Date: %s<br/>", dateTime.Format((time.ANSIC)))
-	fmt.Fprint(w, "<a href=\"/contact\">Contact page</a><br/>")
-	fmt.Fprint(w, "<a href=\"/faq\">FAQ page</a><br/>")
+	if err := homeTemplate.Execute(w, nil); err != nil {
+		panic(err)
+	}
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,8 +42,14 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
 	fmt.Println("Server started!!!")
-	fmt.Println("Testing cli branching")
+
+	var err error
+	homeTemplate, err = template.ParseFiles("views/home.go.html")
+	if err != nil {
+		panic(err)
+	}
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
