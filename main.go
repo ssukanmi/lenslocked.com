@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	homeTemplate *template.Template
+	homeTemplate    *template.Template
+	contactTemplate *template.Template
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,9 +23,9 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, "To get in touch, please send an email to <a href=\"mailto:support@lenslocked.com\">support@lenslocked.com</a>.<br/>")
-	fmt.Fprint(w, "<a href=\"/\">Go back home</a><br/>")
-	fmt.Fprint(w, "<a href=\"/faq\">FAQ page</a><br/>")
+	if err := contactTemplate.Execute(w, nil); err != nil {
+		panic(err)
+	}
 }
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,11 +43,14 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
 	fmt.Println("Server started!!!")
 
 	var err error
 	homeTemplate, err = template.ParseFiles("views/home.go.html")
+	if err != nil {
+		panic(err)
+	}
+	contactTemplate, err = template.ParseFiles("views/contact.go.html")
 	if err != nil {
 		panic(err)
 	}
