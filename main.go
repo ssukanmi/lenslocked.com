@@ -46,11 +46,17 @@ func main() {
 	fmt.Println("Server started!!!")
 
 	var err error
-	homeTemplate, err = template.ParseFiles("views/home.go.html")
+	homeTemplate, err = template.ParseFiles(
+		"views/home.gohtml",
+		"views/layouts/footer.gohtml",
+	)
 	if err != nil {
 		panic(err)
 	}
-	contactTemplate, err = template.ParseFiles("views/contact.go.html")
+	contactTemplate, err = template.ParseFiles(
+		"views/contact.gohtml",
+		"views/layouts/footer.gohtml",
+	)
 	if err != nil {
 		panic(err)
 	}
